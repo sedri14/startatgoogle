@@ -1,0 +1,14 @@
+{
+    "_id": "635bec401f39c2d496c56d60",
+    "index": 0,
+    "guid": "d5cf5537-f902-4532-a8d1-461881f71dba",
+    "isActive": true,
+    "balance": "$1,504.90",
+    "picture": "http://placehold.it/32x32",
+    "age": 20,
+    "eyeColor": "green",
+    "name": "Sonia Gibson",
+    "gender": "female",
+    "company": "VIDTO",
+    "email": "soniagibson@vidto.com"
+}
