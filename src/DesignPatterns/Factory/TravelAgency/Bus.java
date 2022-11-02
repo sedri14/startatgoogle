@@ -7,6 +7,11 @@ public class Bus implements Vehicle{
     }
 
     @Override
+    public String toString() {
+        return "Bus";
+    }
+
+    @Override
     public int hashCode() {
         return super.hashCode();
     }

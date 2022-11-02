@@ -12,6 +12,11 @@ public class Boat implements Vehicle{
     }
 
     @Override
+    public String toString() {
+        return "Boat";
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
     }

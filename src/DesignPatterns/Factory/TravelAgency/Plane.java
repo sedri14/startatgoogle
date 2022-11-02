@@ -7,6 +7,11 @@ public class Plane implements Vehicle{
     }
 
     @Override
+    public String toString() {
+        return "Plane";
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
     }

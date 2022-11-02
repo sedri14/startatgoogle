@@ -7,6 +7,11 @@ public class Taxi implements Vehicle{
     }
 
     @Override
+    public String toString() {
+        return "Taxi";
+    }
+
+    @Override
     public int hashCode() {
         return super.hashCode();
     }

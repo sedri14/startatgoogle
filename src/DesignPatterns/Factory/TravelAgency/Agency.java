@@ -1,9 +1,7 @@
 package DesignPatterns.Factory.TravelAgency;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 class Agency {
 
@@ -17,9 +15,13 @@ class Agency {
         assignedVehicles = new HashMap();
     }
 
+    public Map<Vehicle, Passenger> getAssignedVehicles() {
+        return assignedVehicles;
+    }
+
     public Map<VehicleType, List<Vehicle>> populateMotorPool(Map<VehicleType, Integer> amountByType) {
 
-        VehicleFactory factory = new VehicleFactory();
+        VehicleFactory factory = VehicleFactory.getInstance();
         Map<VehicleType, List<Vehicle>> generatedVehicles = new HashMap<>();
 
         for (Map.Entry<VehicleType, Integer> entry : amountByType.entrySet()) {
@@ -34,8 +36,44 @@ class Agency {
         return generatedVehicles;
     }
 
-    boolean assignToVehicle(Passenger passenger) {
+    void assignToVehicle(Passenger passenger) {
+        VehicleType favoriteType = passenger.getFavoriteVehicleType();
 
+        if (availableVehicles.containsKey(favoriteType)) {
+            int listSize = availableVehicles.get(favoriteType).size();
+            if (listSize > 0) {
+                Vehicle vehicle = availableVehicles.get(favoriteType).remove(listSize - 1);
+                assignedVehicles.put(vehicle, passenger);
+            } else {
+                assignRandomType(passenger);
+            }
+        } else {
+            throw new IllegalArgumentException(("Illegal choice of type. Please go to another agency."));
+        }
+    }
+
+    private void assignRandomType(Passenger passenger) {
+        if (isEmpty(availableVehicles)) {
+            System.out.println("We're sorry. No vehicles left for you");
+        }
+
+        List<VehicleType> types = Arrays.asList(VehicleType.values());
+        VehicleType randType = types.get(ThreadLocalRandom.current().nextInt(types.size()-1));
+        while (availableVehicles.get(randType).isEmpty()) {
+            types.remove(randType);
+            randType = types.get(ThreadLocalRandom.current().nextInt(types.size()-1));
+        }
+
+        int listSize = availableVehicles.get(randType).size();
+        Vehicle vehicle = availableVehicles.get(randType).remove(listSize - 1);
+        assignedVehicles.put(vehicle, passenger);
+    }
+
+    private boolean isEmpty(Map<VehicleType, List<Vehicle>> availableVehicles) {
+        for (Map.Entry<VehicleType, List<Vehicle>> entry : availableVehicles.entrySet()) {
+            if (!entry.getValue().isEmpty())
+                return false;
+        }
         return true;
     }
 }

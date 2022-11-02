@@ -10,6 +10,14 @@ class Passenger {
         this.favoriteVehicleType = favoriteVehicleType;
     }
 
+    @Override
+    public String toString() {
+        return "Passenger{" +
+                "name='" + name + '\'' +
+                ", favoriteVehicleType=" + favoriteVehicleType +
+                '}';
+    }
+
     public String getName() {
         return name;
     }
