@@ -8,11 +8,14 @@ class Agency {
     private final String name;
     private Map<VehicleType, List<Vehicle>> availableVehicles;
     private Map<Vehicle, Passenger> assignedVehicles;
+    List<VehicleType> typesPool;
+
 
     public Agency(String name) {
         this.name = name;
         availableVehicles = populateMotorPool(VehicleType.getVehicleCount());
         assignedVehicles = new HashMap();
+        typesPool = new ArrayList<>(Arrays.asList(VehicleType.values()));
     }
 
     public Map<Vehicle, Passenger> getAssignedVehicles() {
@@ -45,35 +48,43 @@ class Agency {
                 Vehicle vehicle = availableVehicles.get(favoriteType).remove(listSize - 1);
                 assignedVehicles.put(vehicle, passenger);
             } else {
-                assignRandomType(passenger);
+                assignRandomType(passenger,typesPool);
             }
         } else {
             throw new IllegalArgumentException(("Illegal choice of type. Please go to another agency."));
         }
     }
 
-    private void assignRandomType(Passenger passenger) {
-        if (isEmpty(availableVehicles)) {
+    private void assignRandomType(Passenger passenger, List<VehicleType> types) {
+        if (isAvailableVehiclesEmpty()) {
             System.out.println("We're sorry. No vehicles left for you");
+
+            return;
         }
 
-        List<VehicleType> types = Arrays.asList(VehicleType.values());
-        VehicleType randType = types.get(ThreadLocalRandom.current().nextInt(types.size()-1));
-        while (availableVehicles.get(randType).isEmpty()) {
+        VehicleType randType = types.get(ThreadLocalRandom.current().nextInt(types.size()));
+        List<Vehicle> listOfType = availableVehicles.get(randType);
+        while (listOfType.isEmpty()){
             types.remove(randType);
-            randType = types.get(ThreadLocalRandom.current().nextInt(types.size()-1));
+            randType = types.get(ThreadLocalRandom.current().nextInt(types.size()));
+            listOfType = availableVehicles.get(randType);
         }
-
-        int listSize = availableVehicles.get(randType).size();
-        Vehicle vehicle = availableVehicles.get(randType).remove(listSize - 1);
+        Vehicle vehicle = listOfType.remove(listOfType.size() - 1);
         assignedVehicles.put(vehicle, passenger);
     }
 
-    private boolean isEmpty(Map<VehicleType, List<Vehicle>> availableVehicles) {
+    public boolean isAvailableVehiclesEmpty() {
         for (Map.Entry<VehicleType, List<Vehicle>> entry : availableVehicles.entrySet()) {
             if (!entry.getValue().isEmpty())
                 return false;
         }
         return true;
+    }
+
+    public void invokeTransport() {
+        System.out.println("Invoke transport");
+        for (Map.Entry<Vehicle,Passenger> entry: assignedVehicles.entrySet()){
+            entry.getKey().transport(entry.getValue());
+        }
     }
 }
