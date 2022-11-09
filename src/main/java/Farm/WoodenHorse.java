@@ -10,6 +10,6 @@ class WoodenHorse implements WoodenStructures {
     @Override
     public WoodenStructures replicate() {
         System.out.println("Wooden horse is replicating...");
-        return null;
+        return new WoodenHorse();
     }
 }
