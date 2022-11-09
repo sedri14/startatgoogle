@@ -1,0 +1,4 @@
+package Farm;
+
+ class WoodenStructureAdapter {
+}
