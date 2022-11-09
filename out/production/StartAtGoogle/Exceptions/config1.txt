@@ -1,7 +1,0 @@
-{
-  "os" : "windows",
-  "version" : "2.3.5",
-  "language" : "en",
-  "mapEnabled" : true,
-  "autoSave" : false
-}
